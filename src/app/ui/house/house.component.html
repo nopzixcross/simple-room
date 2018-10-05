@@ -1,0 +1,42 @@
+<a class="button is-primary is-fullwidth" routerLink="/house/add">
+  <span class="icon">
+    <i class="fas fa-plus"></i>
+  </span>
+</a>
+<table class="table is-responsive is-fullwidth">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Room</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of house;index as i">
+      <td>{{i+1}}</td>
+      <td><a routerLink="/house-room/{{item.name}}">{{item.name}}</a></td>
+      <td>{{item.address}}</td>
+      <td>{{item.room.length}}</td>
+      <td>
+        <div class="field is-grouped is-pulled-right">
+          <p class="control">
+            <a class="button is-primary" routerLink="/house/edit/{{item.id}}">
+              <span class="icon">
+                <i class="far fa-edit"></i>
+              </span>
+            </a>
+          </p>
+          <p class="control">
+            <a class="button is-danger" (click)="onDelete(item)">
+              <span class="icon">
+                <i class="far fa-trash-alt"></i>
+              </span>
+            </a>
+          </p>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

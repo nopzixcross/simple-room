@@ -1,0 +1,16 @@
+<form (submit)="onSubmit($event)">
+  <div class="field">
+    <label class="label">Name</label>
+    <div class="control">
+      <input class="input" type="text" placeholder="Type" name="houseName" [(ngModel)]="house.name" required>
+    </div>
+  </div>
+  <div class="field">
+    <label class="label">Address</label>
+    <div class="control">
+      <input class="input" type="text" placeholder="Description" name="houseAddress" [(ngModel)]="house.address"
+        required>
+    </div>
+  </div>
+  <button class="button is-block is-info is-large is-fullwidth">Submit</button>
+</form>

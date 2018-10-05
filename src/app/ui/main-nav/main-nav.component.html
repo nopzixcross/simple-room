@@ -1,0 +1,26 @@
+<nav class="navbar" *ngIf="visible" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a id="navToggle" role="button" class="navbar-burger" (click)="toggleCollapse()" [ngClass]="{'is-active': show}">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div class="navbar-menu" [ngClass]="{'is-active': show}">
+    <div class="navbar-end">
+      <a class="navbar-item" routerLink="/house">
+        House
+      </a>
+      <a class="navbar-item" routerLink="/tanent">
+        Tanent
+      </a>
+      <a class="navbar-item" routerLink="/cost">
+        Cost
+      </a>
+      <a class="navbar-item" (click)="logout()">
+        Logout
+      </a>
+    </div>
+  </div>
+</nav>
