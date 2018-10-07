@@ -11,6 +11,7 @@ import { EditCostComponent } from "./ui/cost/edit-cost/edit-cost.component";
 import { EditTanentComponent } from "./ui/tanent/edit-tanent/edit-tanent.component";
 import { EditRoomComponent } from "./ui/room/edit-room/edit-room.component";
 import { EditHouseComponent } from "./ui/house/edit-house/edit-house.component";
+import { RentalComponent } from "./ui/rental/rental.component";
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
@@ -36,7 +37,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "room/add",
+    path: "room/add/:id",
     component: EditRoomComponent,
     canActivate: [AuthGuard]
   },
@@ -66,7 +67,13 @@ const routes: Routes = [
     path: "tanent/edit/:id",
     component: EditTanentComponent,
     canActivate: [AuthGuard]
-  }
+  },
+  {
+    path: "rental/:id",
+    component: RentalComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: "**", redirectTo: "/dashboard" }
 ];
 
 @NgModule({

@@ -1,4 +1,11 @@
 <form (submit)="onSubmit($event)">
+  <div class="field" *ngIf="mode=='add'">
+    <label class="label">House</label>
+    <div class="control">
+      <input class="input" type="text" placeholder="Type" name="houseId" [(ngModel)]="room.house_id" disabled="disabled"
+        required>
+    </div>
+  </div>
   <div class="field">
     <label class="label">Name</label>
     <div class="control">

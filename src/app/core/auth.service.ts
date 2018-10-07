@@ -48,6 +48,10 @@ export class AuthService {
   }
 
   emailLogin(email: string, password: string) {
+    if (!email || !password) {
+      this.notify.update("Please input E-mail and Password!", "error");
+      return;
+    }
     return this.afAuth.auth
       .signInWithEmailAndPassword(email, password)
       .then(credential => {

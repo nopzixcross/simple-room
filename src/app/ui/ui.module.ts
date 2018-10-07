@@ -14,6 +14,7 @@ import { EditHouseComponent } from "./house/edit-house/edit-house.component";
 import { EditRoomComponent } from "./room/edit-room/edit-room.component";
 import { EditTanentComponent } from "./tanent/edit-tanent/edit-tanent.component";
 import { EditCostComponent } from "./cost/edit-cost/edit-cost.component";
+import { RentalComponent } from './rental/rental.component';
 
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule],
@@ -29,7 +30,8 @@ import { EditCostComponent } from "./cost/edit-cost/edit-cost.component";
     EditHouseComponent,
     EditRoomComponent,
     EditTanentComponent,
-    EditCostComponent
+    EditCostComponent,
+    RentalComponent
   ],
   exports: [LoginComponent, NotificationMessageComponent, MainNavComponent]
 })

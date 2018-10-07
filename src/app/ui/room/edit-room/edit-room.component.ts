@@ -4,6 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 
 interface Room {
   id?: string;
+  house_id?: string;
   name?: string;
   description?: string;
   rate?: string;
@@ -22,6 +23,7 @@ export class EditRoomComponent implements OnInit {
   constructor(private data: DataService, private router: ActivatedRoute) {
     this.mode = router.snapshot.url[1].path == "edit" ? "edit" : "add";
     if (this.mode == "edit") this.id = router.snapshot.params.id;
+    if (this.mode == "add") this.room.house_id = router.snapshot.params.id;
   }
 
   ngOnInit() {
@@ -46,11 +48,12 @@ export class EditRoomComponent implements OnInit {
   }
 
   addDetail() {
-    let { name, description, rate } = this.room;
+    let { name, description, rate, house_id } = this.room;
     this.data.addRoomDetail({
       name,
       description,
-      rate: parseFloat(rate)
+      rate: parseFloat(rate),
+      house_id
     });
   }
 

@@ -1,0 +1,31 @@
+<form (submit)="onSubmit($event)">
+  <div class="field">
+    <label class="label">Name</label>
+    <div class="control">
+      <input class="input" type="text" placeholder="Type" name="tanentName" [(ngModel)]="tanent.name" disabled="disabled"
+        required>
+    </div>
+  </div>
+  <div class="field">
+    <label class="label">House</label>
+    <div class="control">
+      <div class="select is-fullwidth">
+        <select (change)="onChangeHouse($event)">
+          <option value="null">Select dropdown</option>
+          <option *ngFor="let item of house" [value]="item.name">{{item.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="field" *ngIf="houseName">
+    <label class="label">Room</label>
+    <div class="control">
+      <div class="select is-fullwidth">
+        <select name="tanentName" [(ngModel)]="rental.room_id">
+          <option *ngFor="let item of room" [value]="item.id">{{item.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <button class="button is-block is-info is-large is-fullwidth">Submit</button>
+</form>
