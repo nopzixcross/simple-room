@@ -7,14 +7,20 @@
         <div class="box">
           <form (submit)="login($event)">
             <div class="field">
-              <div class="control">
+              <div class="control has-icon">
                 <input class="input is-large" type="email" placeholder="Your Email" autofocus="" required #email>
+                <span class="icon is-small">
+                  <i class="fa fa-envelope"></i>
+                </span>
               </div>
             </div>
 
             <div class="field">
-              <div class="control">
+              <div class="control has-icon">
                 <input class="input is-large" type="password" placeholder="Your Password" required #password>
+                <span class="icon is-small">
+                  <i class="fa fa-envelope"></i>
+                </span>
               </div>
             </div>
             <!-- <div class="field">

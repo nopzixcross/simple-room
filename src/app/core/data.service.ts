@@ -44,6 +44,10 @@ export class DataService {
     return this.getDataList("tanent");
   }
 
+  getRentalList() {
+    return this.getDataList("rental");
+  }
+
   getTanentDetail(id) {
     return this.getDetail("tanent", id);
   }
@@ -62,6 +66,10 @@ export class DataService {
 
   getRoomDetail(id) {
     return this.getDetail("room", id);
+  }
+
+  getRentalDetail(id) {
+    return this.getDetail("rental", id);
   }
 
   filterByField(data, field, value) {
@@ -115,10 +123,70 @@ export class DataService {
     return this.addDetail("tanent", data);
   }
 
+  addRentalDetail(data) {
+    return this.addDetail("rental", data);
+  }
+
   addDetail(collection, data) {
     return this.db
       .collection(collection)
       .add(data)
+      .then(function() {
+        console.log("Document successfully added!");
+      })
+      .catch(function(error) {
+        console.error("Error add document: ", error);
+      });
+  }
+
+  setRentalData(documentId, data) {
+    return this.setData("rental", documentId, data);
+  }
+
+  setTransactionData(data) {
+    let electrityUnit;
+    let waterSupplyUnit;
+    this.getDetail("cost", "F6nKkGBmbpkSEnwuDuyZ").subscribe(res => {
+      electrityUnit = parseFloat(res["value"]);
+      data.forEach(transaction => {
+        let { current_electrity, lastmonth_electrity, rental_id } = transaction;
+        let value = electrityUnit;
+        let unit = current_electrity - lastmonth_electrity;
+        let amount = unit * value;
+        return this.setData("transaction_electrity", transaction.id, {
+          rental_id,
+          current_electrity: parseFloat(current_electrity),
+          lastmonth_electrity: parseFloat(lastmonth_electrity),
+          unit,
+          amount,
+          value
+        });
+      });
+    });
+    this.getDetail("cost", "WhMxKfUhFylH8zDIp8H1").subscribe(res => {
+      waterSupplyUnit = parseFloat(res["value"]);
+      data.forEach(transaction => {
+        this.getRentalDetail(transaction.rental_id).subscribe(res => {
+          this.getTanentDetail(res["tanent_id"]).subscribe(res => {
+            let unit = res["member"];
+            let value = waterSupplyUnit;
+            let amount = unit * value;
+            return this.setData("transaction_watersupply", transaction.id, {
+              amount,
+              unit,
+              value
+            });
+          });
+        });
+      });
+    });
+  }
+
+  setData(collection, documentId, data) {
+    return this.db
+      .collection(collection)
+      .doc(documentId)
+      .set(data, { merge: true })
       .then(function() {
         console.log("Document successfully added!");
       })

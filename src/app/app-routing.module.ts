@@ -12,6 +12,8 @@ import { EditTanentComponent } from "./ui/tanent/edit-tanent/edit-tanent.compone
 import { EditRoomComponent } from "./ui/room/edit-room/edit-room.component";
 import { EditHouseComponent } from "./ui/house/edit-house/edit-house.component";
 import { RentalComponent } from "./ui/rental/rental.component";
+import { EditRentalComponent } from "./ui/rental/edit-rental/edit-rental.component";
+import { CutoffComponent } from "./ui/cutoff/cutoff.component";
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
@@ -69,8 +71,18 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "rental/:id",
+    path: "rental",
     component: RentalComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "rental/:id",
+    component: EditRentalComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "cutoff",
+    component: CutoffComponent,
     canActivate: [AuthGuard]
   },
   { path: "**", redirectTo: "/dashboard" }

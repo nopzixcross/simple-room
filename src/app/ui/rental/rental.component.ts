@@ -1,16 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { DataService } from "./../../core/data.service";
-import { ActivatedRoute } from "@angular/router";
-
-interface Tanent {
-  id?: string;
-  name?: string;
-  member?: string;
-}
-
-interface Rental {
-  room_id?: string;
-}
 
 @Component({
   selector: "app-rental",
@@ -18,33 +7,26 @@ interface Rental {
   styleUrls: ["./rental.component.css"]
 })
 export class RentalComponent implements OnInit {
-  id;
-  room;
-  house;
-  houseName = false;
-  tanent: Tanent = {};
-  rental: Rental = {};
-  constructor(private data: DataService, private router: ActivatedRoute) {
-    this.id = router.snapshot.params.id;
-  }
+  rental;
+  constructor(private data: DataService) {}
 
   ngOnInit() {
-    this.data.getTanentDetail(this.id).subscribe(res => {
-      this.tanent = res;
-    });
-    this.house = this.data.getHouseList();
-  }
-
-  onChangeHouse(event) {
-    this.houseName = event.target.value !== "null" ? event.target.value : false;
-    if (this.houseName) {
-      this.data.getRoomList().subscribe(res => {
-        this.room = this.data.filterByField(res, "house_id", this.houseName);
+    this.data.getRentalList().subscribe(res => {
+      this.rental = res;
+      this.rental.forEach((rentalList, index, arr) => {
+        this.rental[index]["roomName"] = "";
+        this.rental[index]["tanentName"] = "";
+        this.data.getDetail("room", rentalList.room_id).subscribe(res => {
+          this.rental[index]["roomName"] = `${res["house_id"]}_${res["name"]}`;
+        });
+        this.data.getDetail("tanent", rentalList.tanent_id).subscribe(res => {
+          this.rental[index]["tanentName"] = res["name"];
+        });
       });
-    }
+    });
   }
 
-  onSubmit(event) {
-    event.preventDefault();
+  onChangeStatus(item) {
+    this.data.setRentalData(item.id, { status: !item.status });
   }
 }

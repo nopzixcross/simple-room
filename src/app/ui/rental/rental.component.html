@@ -1,31 +1,24 @@
-<form (submit)="onSubmit($event)">
-  <div class="field">
-    <label class="label">Name</label>
-    <div class="control">
-      <input class="input" type="text" placeholder="Type" name="tanentName" [(ngModel)]="tanent.name" disabled="disabled"
-        required>
-    </div>
-  </div>
-  <div class="field">
-    <label class="label">House</label>
-    <div class="control">
-      <div class="select is-fullwidth">
-        <select (change)="onChangeHouse($event)">
-          <option value="null">Select dropdown</option>
-          <option *ngFor="let item of house" [value]="item.name">{{item.name}}</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="field" *ngIf="houseName">
-    <label class="label">Room</label>
-    <div class="control">
-      <div class="select is-fullwidth">
-        <select name="tanentName" [(ngModel)]="rental.room_id">
-          <option *ngFor="let item of room" [value]="item.id">{{item.name}}</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <button class="button is-block is-info is-large is-fullwidth">Submit</button>
-</form>
+<table class="table is-responsive is-fullwidth">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Tanent</th>
+      <th>Room</th>
+      <th>Electrity</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of rental;index as i">
+      <td>{{i+1}}</td>
+      <td>{{item.tanentName}}</td>
+      <td>{{item.roomName}}</td>
+      <td>{{item.electrity}}</td>
+      <td>
+        <label class="checkbox">
+          <input type="checkbox" [checked]="item.status" (change)="onChangeStatus(item)">
+        </label>
+      </td>
+    </tr>
+  </tbody>
+</table>
