@@ -14,6 +14,8 @@ interface Rental {
   room_id?: string;
   electrity?: string;
   status?: boolean;
+  lastmonth_electrity?: string;
+  current_electrity?: string;
 }
 
 interface TransactionData {
@@ -30,7 +32,6 @@ interface TransactionData {
 })
 export class CutoffComponent implements OnInit {
   rental;
-  transaction: TransactionData[] = [];
   currentYear = new Date().getFullYear();
   currentMonth = new Date().getMonth() + 1;
   minYear = this.currentYear !== 2018 ? 2018 : this.currentYear;
@@ -53,7 +54,20 @@ export class CutoffComponent implements OnInit {
   }
 
   onSubmit() {
-    this.data.setTransactionData(this.transaction);
+    let transaction = [];
+    this.rental.forEach(rent => {
+      let id = `${this.currentYear}_${this.currentMonth}_${rent.id}`;
+      let rental_id = rent.id;
+      let current_electrity = rent.current_electrity;
+      let lastmonth_electrity = rent.lastmonth_electrity;
+      transaction.push({
+        id,
+        rental_id,
+        current_electrity,
+        lastmonth_electrity
+      });
+    });
+    this.data.setTransactionData(transaction);
   }
 
   getRental() {
@@ -74,35 +88,20 @@ export class CutoffComponent implements OnInit {
         let docRefLastMonth = `${this.currentYear}_${this.currentMonth - 1}_${
           rentalList.id
         }`;
-        let last_electrity = rentalList.electrity;
+        this.rental[index]["lastmonth_electrity"] = rentalList.electrity;
+        this.data
+          .getDetail("transaction_electrity", docRefLastMonth)
+          .subscribe(res => {
+            if (res["current_electrity"] != null) {
+              this.rental[index]["lastmonth_electrity"] =
+                res["current_electrity"];
+            }
+          });
         this.data.getDetail("transaction_electrity", docRef).subscribe(res => {
-          console.log(docRef);
           if (res["current_electrity"] != null) {
-            this.transaction[index] = res;
-          } else {
-            this.transaction[index] = {
-              id: docRef,
-              rental_id: rentalList.id,
-              current_electrity: "",
-              lastmonth_electrity: last_electrity
-            };
+            this.rental[index]["current_electrity"] = res["current_electrity"];
           }
         });
-        console.log(this.transaction);
-        // this.data
-        //   .getDetail("transaction_electrity", docRefLastMonth)
-        //   .subscribe(res => {
-        //     console.log(res["current_electrity"] != null);
-        //     if (res["current_electrity"] != null) {
-        //       last_electrity = res["current_electrity"];
-        //       console.log(last_electrity);
-        //     }
-        //     this.transaction[index] = {
-        //       id: docRef,
-        //       rental_id: rentalList.id,
-        //       lastmonth_electrity: last_electrity
-        //     };
-        //   });
       });
     });
   }
