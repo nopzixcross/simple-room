@@ -5,7 +5,6 @@ import { ActivatedRoute } from "@angular/router";
 interface Tanent {
   id?: string;
   name?: string;
-  member?: string;
 }
 
 @Component({
@@ -33,8 +32,8 @@ export class EditTanentComponent implements OnInit {
 
   onSubmit(event) {
     event.preventDefault();
-    let { name, member } = this.tanent;
-    if (!name || !member) {
+    let { name } = this.tanent;
+    if (!name) {
       return;
     }
     if (this.mode == "add") {
@@ -45,12 +44,12 @@ export class EditTanentComponent implements OnInit {
   }
 
   addDetail() {
-    let { name, member } = this.tanent;
-    this.data.addTanentDetail({ name, member: parseFloat(member) });
+    let { name } = this.tanent;
+    this.data.addTanentDetail({ name });
   }
 
   updateDetail() {
-    let { name, member } = this.tanent;
-    this.data.updateTanentDetail(this.id, { name, member: parseFloat(member) });
+    let { name } = this.tanent;
+    this.data.updateTanentDetail(this.id, { name });
   }
 }

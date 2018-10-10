@@ -5,7 +5,9 @@
       <th>Tanent</th>
       <th>Room</th>
       <th>Electrity</th>
-      <th>Status</th>
+      <th>Member</th>
+      <th class="has-text-centered">Status</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -14,10 +16,22 @@
       <td>{{item.tanentName}}</td>
       <td>{{item.roomName}}</td>
       <td>{{item.electrity}}</td>
-      <td>
+      <td>{{item.member}}</td>
+      <td class="has-text-centered">
         <label class="checkbox">
           <input type="checkbox" [checked]="item.status" (change)="onChangeStatus(item)">
         </label>
+      </td>
+      <td>
+        <div class="field is-grouped is-pulled-right">
+          <p class="control">
+            <a class="button is-danger" (click)="onDelete(item)">
+              <span class="icon">
+                <i class="far fa-trash-alt"></i>
+              </span>
+            </a>
+          </p>
+        </div>
       </td>
     </tr>
   </tbody>

@@ -17,6 +17,7 @@ import { EditCostComponent } from "./cost/edit-cost/edit-cost.component";
 import { RentalComponent } from './rental/rental.component';
 import { EditRentalComponent } from './rental/edit-rental/edit-rental.component';
 import { CutoffComponent } from './cutoff/cutoff.component';
+import { ReportComponent } from './report/report.component';
 
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule],
@@ -35,7 +36,8 @@ import { CutoffComponent } from './cutoff/cutoff.component';
     EditCostComponent,
     RentalComponent,
     EditRentalComponent,
-    CutoffComponent
+    CutoffComponent,
+    ReportComponent
   ],
   exports: [LoginComponent, NotificationMessageComponent, MainNavComponent]
 })

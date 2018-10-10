@@ -5,13 +5,13 @@ import { ActivatedRoute } from "@angular/router";
 interface Tanent {
   id?: string;
   name?: string;
-  member?: string;
 }
 
 interface Rental {
   tanent_id?: string;
   room_id?: string;
   electrity?: string;
+  member?: string;
   status?: boolean;
 }
 
@@ -54,11 +54,12 @@ export class EditRentalComponent implements OnInit {
     if (!this.rental.room_id || !this.rental.electrity) {
       return;
     }
-    let { tanent_id, room_id, electrity, status } = this.rental;
+    let { tanent_id, room_id, electrity, member, status } = this.rental;
     this.data.addRentalDetail({
       tanent_id,
       room_id,
       electrity: parseFloat(electrity),
+      member: parseFloat(member),
       status
     });
   }

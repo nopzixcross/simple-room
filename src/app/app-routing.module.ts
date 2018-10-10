@@ -14,6 +14,7 @@ import { EditHouseComponent } from "./ui/house/edit-house/edit-house.component";
 import { RentalComponent } from "./ui/rental/rental.component";
 import { EditRentalComponent } from "./ui/rental/edit-rental/edit-rental.component";
 import { CutoffComponent } from "./ui/cutoff/cutoff.component";
+import { ReportComponent } from "./ui/report/report.component";
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
@@ -83,6 +84,11 @@ const routes: Routes = [
   {
     path: "cutoff",
     component: CutoffComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "report",
+    component: ReportComponent,
     canActivate: [AuthGuard]
   },
   { path: "**", redirectTo: "/dashboard" }

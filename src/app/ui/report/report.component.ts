@@ -2,11 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { DataService } from "./../../core/data.service";
 
 @Component({
-  selector: "app-rental",
-  templateUrl: "./rental.component.html",
-  styleUrls: ["./rental.component.css"]
+  selector: "app-report",
+  templateUrl: "./report.component.html",
+  styleUrls: ["./report.component.css"]
 })
-export class RentalComponent implements OnInit {
+export class ReportComponent implements OnInit {
   rental;
   constructor(private data: DataService) {}
 
@@ -23,14 +23,7 @@ export class RentalComponent implements OnInit {
           this.rental[index]["tanentName"] = res["name"];
         });
       });
+      console.log(this.rental);
     });
-  }
-
-  onChangeStatus(item) {
-    this.data.setRentalData(item.id, { status: !item.status });
-  }
-
-  onDelete(item) {
-    this.data.deleteRental(item.id);
   }
 }

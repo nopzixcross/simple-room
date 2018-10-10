@@ -14,15 +14,9 @@ interface Rental {
   room_id?: string;
   electrity?: string;
   status?: boolean;
-  lastmonth_electrity?: string;
-  current_electrity?: string;
-}
-
-interface TransactionData {
-  id?: string;
-  rental_id?: string;
   current_electrity?: string;
   lastmonth_electrity?: string;
+  member?: string;
 }
 
 @Component({
@@ -60,11 +54,17 @@ export class CutoffComponent implements OnInit {
       let rental_id = rent.id;
       let current_electrity = rent.current_electrity;
       let lastmonth_electrity = rent.lastmonth_electrity;
+      let created_date = new Date();
+      let year = this.currentYear;
+      let month = this.currentMonth;
       transaction.push({
         id,
         rental_id,
         current_electrity,
-        lastmonth_electrity
+        lastmonth_electrity,
+        created_date,
+        year,
+        month
       });
     });
     this.data.setTransactionData(transaction);
@@ -102,6 +102,14 @@ export class CutoffComponent implements OnInit {
             this.rental[index]["current_electrity"] = res["current_electrity"];
           }
         });
+        this.rental[index]["member"] = rentalList.member;
+        this.data
+          .getDetail("transaction_watersupply", docRef)
+          .subscribe(res => {
+            if (res["member"] != null) {
+              this.rental[index]["member"] = res["member"];
+            }
+          });
       });
     });
   }

@@ -149,7 +149,14 @@ export class DataService {
     this.getDetail("cost", "F6nKkGBmbpkSEnwuDuyZ").subscribe(res => {
       electrityUnit = parseFloat(res["value"]);
       data.forEach(transaction => {
-        let { current_electrity, lastmonth_electrity, rental_id } = transaction;
+        let {
+          current_electrity,
+          lastmonth_electrity,
+          rental_id,
+          created_date,
+          year,
+          month
+        } = transaction;
         let value = electrityUnit;
         let unit = current_electrity - lastmonth_electrity;
         let amount = unit * value;
@@ -159,7 +166,10 @@ export class DataService {
           lastmonth_electrity: parseFloat(lastmonth_electrity),
           unit,
           amount,
-          value
+          value,
+          year,
+          month,
+          created_date
         });
       });
     });
@@ -168,14 +178,32 @@ export class DataService {
       data.forEach(transaction => {
         this.getRentalDetail(transaction.rental_id).subscribe(res => {
           this.getTanentDetail(res["tanent_id"]).subscribe(res => {
-            let unit = res["member"];
+            let member = res["member"];
             let value = waterSupplyUnit;
-            let amount = unit * value;
+            let amount = member * value;
+            let { year, month, created_date } = transaction;
             return this.setData("transaction_watersupply", transaction.id, {
               amount,
-              unit,
-              value
+              member,
+              value,
+              year,
+              month,
+              created_date
             });
+          });
+        });
+      });
+    });
+    data.forEach(transaction => {
+      this.getDetail("rental", transaction.rental_id).subscribe(rent => {
+        this.getDetail("room", rent["room_id"]).subscribe(room => {
+          let { year, month, created_date } = transaction;
+          let roomRate = room["rate"];
+          return this.setData("transaction_room", transaction.id, {
+            roomRate,
+            year,
+            month,
+            created_date
           });
         });
       });
@@ -238,6 +266,10 @@ export class DataService {
 
   deleteTanent(id) {
     return this.deleteData("tanent", id);
+  }
+
+  deleteRental(id) {
+    return this.deleteData("rental", id);
   }
 
   deleteData(collection, documentId) {
