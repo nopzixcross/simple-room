@@ -1,3 +1,23 @@
-<p>
-  report works!
-</p>
+<div class="field is-fullwidth is-grouped">
+  <div class="control">
+    <div class="select is-small">
+      <select name="year" [(ngModel)]="currentYear" (change)="onChangePeriod()">
+        <option *ngFor="let item of periodControl.year" [value]="item">{{item+543}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="control">
+    <div class="select is-small">
+      <select name="month" [(ngModel)]="currentMonth" (change)="onChangePeriod()">
+        <option *ngFor="let item of periodControl.month;index as i" [value]="item">{{monthDes[i]}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div *ngFor="let item of reportDetail | keyvalue">
+  {{item.key}}
+  <div *ngFor="let item of item.value">
+    {{item|json}}
+  </div>
+</div>

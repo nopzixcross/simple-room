@@ -28,6 +28,20 @@ export class CutoffComponent implements OnInit {
   rental;
   currentYear = new Date().getFullYear();
   currentMonth = new Date().getMonth() + 1;
+  monthDes = [
+    "มกราคม",
+    "กุมภาพันธ์",
+    "มีนาคม",
+    "เมษายน",
+    "พฤษภาคม",
+    "มิถุนายน",
+    "กรกฎาคม",
+    "สิงหาคม",
+    "กันยายน",
+    "ตุลาคม",
+    "พฤศจิกายน",
+    "ธันวาคม"
+  ];
   minYear = this.currentYear !== 2018 ? 2018 : this.currentYear;
   maxYear = this.minYear !== 2018 ? 2018 : this.currentYear + 5;
   periodControl;
@@ -54,12 +68,14 @@ export class CutoffComponent implements OnInit {
       let rental_id = rent.id;
       let current_electrity = rent.current_electrity;
       let lastmonth_electrity = rent.lastmonth_electrity;
+      let tanentName = rent.tanentName;
       let created_date = new Date();
       let year = this.currentYear;
       let month = this.currentMonth;
       transaction.push({
         id,
         rental_id,
+        tanentName,
         current_electrity,
         lastmonth_electrity,
         created_date,

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { forkJoin, concat, combineLatest, pipe, Subject, of } from "rxjs";
+import { map, merge } from "rxjs/operators";
 
 @Injectable()
 export class DataService {
@@ -153,19 +153,21 @@ export class DataService {
           current_electrity,
           lastmonth_electrity,
           rental_id,
+          tanentName,
           created_date,
           year,
           month
         } = transaction;
         let value = electrityUnit;
-        let unit = current_electrity - lastmonth_electrity;
-        let amount = unit * value;
+        let elecUnit = current_electrity - lastmonth_electrity;
+        let elecAmount = elecUnit * value;
         return this.setData("transaction_electrity", transaction.id, {
           rental_id,
+          tanentName,
           current_electrity: parseFloat(current_electrity),
           lastmonth_electrity: parseFloat(lastmonth_electrity),
-          unit,
-          amount,
+          elecUnit,
+          elecAmount,
           value,
           year,
           month,
@@ -179,13 +181,21 @@ export class DataService {
         this.getRentalDetail(transaction.rental_id).subscribe(res => {
           this.getTanentDetail(res["tanent_id"]).subscribe(res => {
             let member = res["member"];
-            let value = waterSupplyUnit;
-            let amount = member * value;
-            let { year, month, created_date } = transaction;
+            let waterSupplyvalue = waterSupplyUnit;
+            let waterSupplyAmount = member * waterSupplyvalue;
+            let {
+              rental_id,
+              tanentName,
+              year,
+              month,
+              created_date
+            } = transaction;
             return this.setData("transaction_watersupply", transaction.id, {
-              amount,
+              rental_id,
+              tanentName,
+              waterSupplyAmount,
               member,
-              value,
+              waterSupplyvalue,
               year,
               month,
               created_date
@@ -197,9 +207,17 @@ export class DataService {
     data.forEach(transaction => {
       this.getDetail("rental", transaction.rental_id).subscribe(rent => {
         this.getDetail("room", rent["room_id"]).subscribe(room => {
-          let { year, month, created_date } = transaction;
+          let {
+            rental_id,
+            tanentName,
+            year,
+            month,
+            created_date
+          } = transaction;
           let roomRate = room["rate"];
           return this.setData("transaction_room", transaction.id, {
+            rental_id,
+            tanentName,
             roomRate,
             year,
             month,
