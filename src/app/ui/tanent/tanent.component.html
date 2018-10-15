@@ -8,6 +8,7 @@
     <tr>
       <th>No.</th>
       <th>Name</th>
+      <th>Member</th>
       <th></th>
     </tr>
   </thead>
@@ -15,6 +16,7 @@
     <tr *ngFor="let item of tanent;index as i">
       <td>{{i+1}}</td>
       <td>{{item.name}}</td>
+      <td>{{item.member}}</td>
       <td>
         <div class="field is-grouped is-pulled-right">
           <p class="control">

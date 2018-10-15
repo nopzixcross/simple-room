@@ -118,14 +118,6 @@ export class CutoffComponent implements OnInit {
             this.rental[index]["current_electrity"] = res["current_electrity"];
           }
         });
-        this.rental[index]["member"] = rentalList.member;
-        this.data
-          .getDetail("transaction_watersupply", docRef)
-          .subscribe(res => {
-            if (res["member"] != null) {
-              this.rental[index]["member"] = res["member"];
-            }
-          });
       });
     });
   }
