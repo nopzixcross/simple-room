@@ -46,14 +46,17 @@ export class ReportComponent implements OnInit {
     this.periodControl = this.generateMonthYear(this.minYear, this.maxYear);
     this.data.getRentalList().subscribe(rental => {
       rental.forEach(rent => {
-        let docRef = `${this.currentYear}_${this.currentMonth}_${rent.id}`;
-        let electrity = this.data.getDetail("transaction_electrity", docRef);
-        let room = this.data.getDetail("transaction_room", docRef);
-        let watersupply = this.data.getDetail(
-          "transaction_watersupply",
-          docRef
+        let elecroomRef = `${this.currentYear}_${this.currentMonth}_${rent.id}`;
+        let watersupplyRef = `${this.currentYear}_${this.currentMonth}_${
+          rent["tanent_id"]
+        }`;
+        let electrity = this.data.getDetail(
+          "transaction_electrity",
+          elecroomRef
         );
-        combineLatest(electrity, room, watersupply).subscribe(res => {
+        let room = this.data.getDetail("transaction_room", elecroomRef);
+
+        combineLatest(electrity, room).subscribe(res => {
           let resultObject = res.reduce(function(result, currentObject) {
             for (var key in currentObject) {
               if (currentObject.hasOwnProperty(key)) {
@@ -62,10 +65,25 @@ export class ReportComponent implements OnInit {
             }
             return result;
           }, {});
-          if (!this.reportDetail[resultObject["tanentName"]])
-            this.reportDetail[resultObject["tanentName"]] = [];
-          this.reportDetail[resultObject["tanentName"]].push(resultObject);
-          console.log(this.reportDetail);
+
+          if (!this.reportDetail[resultObject["tanentName"]]) {
+            this.reportDetail[resultObject["tanentName"]] = {};
+            this.reportDetail[resultObject["tanentName"]]["perRoom"] = [];
+          }
+          this.reportDetail[resultObject["tanentName"]]["perRoom"].push(
+            resultObject
+          );
+
+          if (!this.reportDetail[resultObject["tanentName"]]["perTanent"]) {
+            this.reportDetail[resultObject["tanentName"]]["perTanent"] = [];
+            this.data
+              .getDetail("transaction_watersupply", watersupplyRef)
+              .subscribe(res => {
+                this.reportDetail[resultObject["tanentName"]]["perTanent"].push(
+                  res
+                );
+              });
+          }
         });
       });
     });
