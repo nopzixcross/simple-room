@@ -15,6 +15,18 @@
   </div>
 </div>
 
+<table class="table is-responsive is-fullwidth">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Tanent</th>
+      <th>{{monthDes[currentMonth-1]}}</th>
+      <th>{{monthDes[currentMonth-2]}}</th>
+    </tr>
+  </thead>
+</table>
+
+
 <div *ngFor="let item of reportDetail | keyvalue">
   {{item.key}}
   <div *ngFor="let item of item.value">

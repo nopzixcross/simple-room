@@ -45,7 +45,7 @@ export class ReportComponent implements OnInit {
   ngOnInit() {
     this.periodControl = this.generateMonthYear(this.minYear, this.maxYear);
     this.data.getRentalList().subscribe(rental => {
-      rental.forEach((rent, index) => {
+      rental.forEach(rent => {
         let docRef = `${this.currentYear}_${this.currentMonth}_${rent.id}`;
         let electrity = this.data.getDetail("transaction_electrity", docRef);
         let room = this.data.getDetail("transaction_room", docRef);

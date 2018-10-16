@@ -69,6 +69,8 @@ export class CutoffComponent implements OnInit {
       let current_electrity = rent.current_electrity;
       let lastmonth_electrity = rent.lastmonth_electrity;
       let tanentName = rent.tanentName;
+      let member = rent.member;
+      let tanentId = rent.tanentId;
       let created_date = new Date();
       let year = this.currentYear;
       let month = this.currentMonth;
@@ -76,11 +78,13 @@ export class CutoffComponent implements OnInit {
         id,
         rental_id,
         tanentName,
+        tanentId,
         current_electrity,
         lastmonth_electrity,
         created_date,
         year,
-        month
+        month,
+        member
       });
     });
     this.data.setTransactionData(transaction);
@@ -91,12 +95,16 @@ export class CutoffComponent implements OnInit {
       this.rental = this.data.filterByField(res, "status", true);
       this.rental.forEach((rentalList, index, arr) => {
         this.rental[index]["roomName"] = "";
+        this.rental[index]["tanentId"] = "";
         this.rental[index]["tanentName"] = "";
+        this.rental[index]["member"] = "";
         this.data.getDetail("room", rentalList.room_id).subscribe(res => {
           this.rental[index]["roomName"] = `${res["house_id"]}_${res["name"]}`;
         });
         this.data.getDetail("tanent", rentalList.tanent_id).subscribe(res => {
+          this.rental[index]["tanentId"] = res["id"];
           this.rental[index]["tanentName"] = res["name"];
+          this.rental[index]["member"] = res["member"];
         });
         let docRef = `${this.currentYear}_${this.currentMonth}_${
           rentalList.id

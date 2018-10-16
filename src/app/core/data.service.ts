@@ -199,34 +199,27 @@ export class DataService {
     });
     this.getDetail("cost", "WhMxKfUhFylH8zDIp8H1").subscribe(res => {
       waterSupplyUnit = parseFloat(res["value"]);
-      let tanentList = [];
       data.forEach(transaction => {
-        this.getRentalDetail(transaction.rental_id).subscribe(res => {
-          this.getTanentDetail(res["tanent_id"]).subscribe(res => {
-            tanentList.push({ id: res["id"], member: res["member"] });
-          });
-          // this.getTanentDetail(res["tanent_id"]).subscribe(res => {
-          //   let member = res["member"];
-          //   let waterSupplyvalue = waterSupplyUnit;
-          //   let waterSupplyAmount = member * waterSupplyvalue;
-          //   let {
-          //     rental_id,
-          //     tanentName,
-          //     year,
-          //     month,
-          //     created_date
-          //   } = transaction;
-          //   return this.setData("transaction_watersupply", transaction.id, {
-          //     rental_id,
-          //     tanentName,
-          //     waterSupplyAmount,
-          //     member,
-          //     waterSupplyvalue,
-          //     year,
-          //     month,
-          //     created_date
-          //   });
-          // });
+        let {
+          tanentId,
+          tanentName,
+          member,
+          created_date,
+          year,
+          month
+        } = transaction;
+        let waterSupplyvalue = waterSupplyUnit;
+        let waterSupplyAmount = member * waterSupplyvalue;
+        let docRef = `${year}_${month}_${tanentId}`;
+        return this.setData("transaction_watersupply", docRef, {
+          tanentId,
+          tanentName,
+          member,
+          waterSupplyAmount,
+          waterSupplyvalue,
+          year,
+          month,
+          created_date
         });
       });
     });
@@ -305,9 +298,5 @@ export class DataService {
       .catch(function(error) {
         console.error("Error removing document: ", error);
       });
-  }
-
-  onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
   }
 }
