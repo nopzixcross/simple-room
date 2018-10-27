@@ -14,9 +14,7 @@ export class RoomComponent implements OnInit {
     this.id = router.snapshot.params.id;
   }
   ngOnInit() {
-    this.data.getRoomList().subscribe(res => {
-      this.room = this.data.filterByField(res, "house_id", this.id);
-    });
+    this.room = this.data.getRoomList(this.id);
   }
   onDelete(item) {
     this.data.deleteRoom(item.id);

@@ -5,8 +5,8 @@ import { ActivatedRoute } from "@angular/router";
 interface Cost {
   id?: string;
   type?: string;
-  description?: string;
-  value?: string;
+  name?: string;
+  base?: string;
 }
 
 @Component({
@@ -34,8 +34,8 @@ export class EditCostComponent implements OnInit {
 
   onSubmit(event) {
     event.preventDefault();
-    let { type, description, value } = this.cost;
-    if (!type || !description || !value) {
+    let { type, name, base } = this.cost;
+    if (!type || !name || !base) {
       return;
     }
     if (this.mode == "add") {
@@ -47,17 +47,17 @@ export class EditCostComponent implements OnInit {
 
   addDetail() {
     event.preventDefault();
-    let { type, description, value } = this.cost;
-    this.data.addCostDetail({ type, description, value: parseFloat(value) });
+    let { type, name, base } = this.cost;
+    this.data.addCostDetail({ type, name, base: parseFloat(base) });
   }
 
   updateDetail() {
     event.preventDefault();
-    let { type, description, value } = this.cost;
+    let { type, name, base } = this.cost;
     this.data.updateCostDetail(this.id, {
       type,
-      description,
-      value: parseFloat(value)
+      name,
+      base: parseFloat(base)
     });
   }
 }

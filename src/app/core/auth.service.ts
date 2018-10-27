@@ -19,6 +19,7 @@ interface User {
 @Injectable()
 export class AuthService {
   user: Observable<User | null>;
+  loggedIn: boolean = false;
   constructor(
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
@@ -52,6 +53,7 @@ export class AuthService {
       this.notify.update("Please input E-mail and Password!", "error");
       return;
     }
+    this.loggedIn = true;
     return this.afAuth.auth
       .signInWithEmailAndPassword(email, password)
       .then(credential => {
@@ -63,6 +65,7 @@ export class AuthService {
   }
 
   signOut() {
+    this.loggedIn = false;
     this.afAuth.auth.signOut().then(() => {
       this.router.navigate(["/"]);
       this.notify.clear();

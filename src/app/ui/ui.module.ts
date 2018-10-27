@@ -1,6 +1,14 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import {
+  MatButtonModule,
+  MatNativeDateModule,
+  MatIconModule,
+  MatSidenavModule,
+  MatListModule,
+  MatToolbarModule
+} from "@angular/material";
 import { LoginComponent } from "./login/login.component";
 import { NotificationMessageComponent } from "./notification-message/notification-message.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
@@ -20,7 +28,17 @@ import { CutoffComponent } from "./cutoff/cutoff.component";
 import { ReportComponent } from "./report/report.component";
 
 @NgModule({
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    MatButtonModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatListModule,
+    MatToolbarModule
+  ],
   declarations: [
     LoginComponent,
     NotificationMessageComponent,

@@ -44,18 +44,26 @@ export class ReportComponent implements OnInit {
 
   ngOnInit() {
     this.periodControl = this.generateMonthYear(this.minYear, this.maxYear);
+    this.getReport();
+  }
+
+  onChangePeriod() {
+    this.getReport();
+  }
+
+  getReport() {
+    this.reportDetail = {};
     this.data.getRentalList().subscribe(rental => {
       rental.forEach(rent => {
         let elecroomRef = `${this.currentYear}_${this.currentMonth}_${rent.id}`;
         let watersupplyRef = `${this.currentYear}_${this.currentMonth}_${
-          rent["tanent_id"]
+          rent["tanentId"]
         }`;
         let electrity = this.data.getDetail(
           "transaction_electrity",
           elecroomRef
         );
         let room = this.data.getDetail("transaction_room", elecroomRef);
-
         combineLatest(electrity, room).subscribe(res => {
           let resultObject = res.reduce(function(result, currentObject) {
             for (var key in currentObject) {
@@ -65,24 +73,32 @@ export class ReportComponent implements OnInit {
             }
             return result;
           }, {});
+          if (resultObject["created_date"]) {
+            if (!this.reportDetail[resultObject["tanentName"]]) {
+              this.reportDetail[resultObject["tanentName"]] = {};
+              this.reportDetail[resultObject["tanentName"]]["perRoom"] = [];
+              this.reportDetail[resultObject["tanentName"]]["total"] = 0;
+            }
+            this.reportDetail[resultObject["tanentName"]]["perRoom"].push(
+              resultObject
+            );
+            this.reportDetail[resultObject["tanentName"]]["total"] +=
+              resultObject["elecAmount"];
+            this.reportDetail[resultObject["tanentName"]]["total"] +=
+              resultObject["roomRate"];
 
-          if (!this.reportDetail[resultObject["tanentName"]]) {
-            this.reportDetail[resultObject["tanentName"]] = {};
-            this.reportDetail[resultObject["tanentName"]]["perRoom"] = [];
-          }
-          this.reportDetail[resultObject["tanentName"]]["perRoom"].push(
-            resultObject
-          );
-
-          if (!this.reportDetail[resultObject["tanentName"]]["perTanent"]) {
-            this.reportDetail[resultObject["tanentName"]]["perTanent"] = [];
-            this.data
-              .getDetail("transaction_watersupply", watersupplyRef)
-              .subscribe(res => {
-                this.reportDetail[resultObject["tanentName"]]["perTanent"].push(
-                  res
-                );
-              });
+            if (!this.reportDetail[resultObject["tanentName"]]["perTanent"]) {
+              this.reportDetail[resultObject["tanentName"]]["perTanent"] = [];
+              this.data
+                .getDetail("transaction_watersupply", watersupplyRef)
+                .subscribe(res => {
+                  this.reportDetail[resultObject["tanentName"]][
+                    "perTanent"
+                  ].push(res);
+                  this.reportDetail[resultObject["tanentName"]]["total"] +=
+                    res["waterSupplyAmount"];
+                });
+            }
           }
         });
       });

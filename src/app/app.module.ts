@@ -13,6 +13,17 @@ import { UiModule } from "./ui/ui.module";
 import { AngularFireModule } from "angularfire2";
 import { AngularFirestoreModule } from "angularfire2/firestore";
 import { AngularFireAuthModule } from "angularfire2/auth";
+import { ServiceWorkerModule } from "@angular/service-worker";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+
+import {
+  MatButtonModule,
+  MatNativeDateModule,
+  MatIconModule,
+  MatSidenavModule,
+  MatListModule,
+  MatToolbarModule
+} from "@angular/material";
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +34,17 @@ import { AngularFireAuthModule } from "angularfire2/auth";
     CoreModule,
     AngularFireModule.initializeApp(environment.firebase, "firestarter"),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    ServiceWorkerModule.register("ngsw-worker.js", {
+      enabled: environment.production
+    }),
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatListModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

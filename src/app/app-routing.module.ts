@@ -40,12 +40,12 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "room/add/:id",
+    path: "room/add/:houseId",
     component: EditRoomComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: "room/edit/:id",
+    path: "room/edit/:houseId/:roomId",
     component: EditRoomComponent,
     canActivate: [AuthGuard]
   },

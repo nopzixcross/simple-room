@@ -5,13 +5,13 @@ import { ActivatedRoute } from "@angular/router";
 interface Tanent {
   id?: string;
   name?: string;
+  member?: string;
 }
 
 interface Rental {
-  tanent_id?: string;
-  room_id?: string;
+  tanent?: {};
+  room?: any;
   electrity?: string;
-  member?: string;
   status?: boolean;
 }
 
@@ -24,12 +24,11 @@ export class EditRentalComponent implements OnInit {
   id;
   room;
   house;
-  houseName = false;
+  houseId = false;
   tanent: Tanent = {};
-  rental: Rental = { room_id: "", status: true };
+  rental: Rental = { room: "", status: true };
   constructor(private data: DataService, private router: ActivatedRoute) {
     this.id = router.snapshot.params.id;
-    this.rental.tanent_id = this.id;
   }
 
   ngOnInit() {
@@ -40,27 +39,36 @@ export class EditRentalComponent implements OnInit {
   }
 
   onChangeHouse(event) {
-    this.rental.room_id = "";
-    this.houseName = event.target.value !== "null" ? event.target.value : false;
-    if (this.houseName) {
-      this.data.getRoomList().subscribe(res => {
-        this.room = this.data.filterByField(res, "house_id", this.houseName);
-      });
+    this.rental.room = "";
+    this.houseId = event.target.value !== "null" ? event.target.value : false;
+    if (this.houseId) {
+      this.room = this.data.getRoomList(this.houseId);
     }
   }
 
   onSubmit(event) {
     event.preventDefault();
-    if (!this.rental.room_id || !this.rental.electrity) {
+    if (!this.rental.room || !this.rental.electrity) {
       return;
     }
-    let { tanent_id, room_id, electrity, member, status } = this.rental;
+    let room = JSON.parse(this.rental.room);
+    let tanentId = this.tanent.id;
+    let tanentName = this.tanent.name;
+    let member = this.tanent.member;
+    let houseId = this.houseId;
+    let roomId = room.id;
+    let roomName = room.name;
+    let roomRate = room.rate;
     this.data.addRentalDetail({
-      tanent_id,
-      room_id,
-      electrity: parseFloat(electrity),
-      member: parseFloat(member),
-      status
+      tanentId,
+      tanentName,
+      houseId,
+      roomId,
+      roomName,
+      roomRate,
+      member,
+      electrity: parseFloat(this.rental.electrity),
+      status: this.rental.status
     });
   }
 }

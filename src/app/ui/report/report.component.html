@@ -35,11 +35,6 @@
       <td>{{item.elecUnit}} หน่วย</td>
       <td>{{item.elecAmount | number}} บาท</td>
     </tr>
-    <tr *ngFor="let item of item.value.perTanent">
-      <td colspan="3" style="padding-left:2.5em"><b>ค่าน้ำ</b></td>
-      <td>{{item.member}} คน</td>
-      <td>{{item.waterSupplyAmount | number}} บาท</td>
-    </tr>
     <tr>
       <td style="padding-left:2.5rem"><b>ค่าห้อง</b></td>
       <td colspan="4"></td>
@@ -50,10 +45,15 @@
       </td>
       <td>{{item.roomRate | number}} บาท</td>
     </tr>
+    <tr *ngFor="let item of item.value.perTanent">
+      <td colspan="3" style="padding-left:2.5em"><b>ค่าน้ำ</b></td>
+      <td>{{item.member}} คน</td>
+      <td>{{item.waterSupplyAmount | number}} บาท</td>
+    </tr>
     <tr style="background:#dddddd">
       <td colspan="3"><b>{{item.key}}</b></td>
       <td><b>รวม</b></td>
-      <td>0 บาท</td>
+      <td>{{item.value.total | number}} บาท</td>
     </tr>
   </tbody>
 </table>

@@ -1,8 +1,3 @@
-<a class="button is-primary is-fullwidth" routerLink="/house/add">
-  <span class="icon">
-    <i class="fas fa-plus"></i>
-  </span>
-</a>
 <table class="table is-responsive is-fullwidth">
   <thead>
     <tr>
@@ -16,11 +11,11 @@
   <tbody>
     <tr *ngFor="let item of house;index as i">
       <td>{{i+1}}</td>
-      <td><a routerLink="/house-room/{{item.name}}">{{item.name}}</a></td>
+      <td><a routerLink="/house-room/{{item.id}}">{{item.name}}</a></td>
       <td>{{item.address}}</td>
       <td>{{item.room.length}}</td>
       <td>
-        <div class="field is-grouped is-pulled-right">
+        <div class="field is-grouped">
           <p class="control">
             <a class="button is-primary" routerLink="/house/edit/{{item.id}}">
               <span class="icon">
@@ -40,3 +35,7 @@
     </tr>
   </tbody>
 </table>
+
+<div class="add-button">
+  <button mat-fab color="primary" routerLink="/house/add">+</button>
+</div>

@@ -1,38 +1,10 @@
-<nav class="navbar" *ngIf="visible" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a id="navToggle" role="button" class="navbar-burger" (click)="toggleCollapse()" [ngClass]="{'is-active': show}">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-
-  <div class="navbar-menu" [ngClass]="{'is-active': show}">
-    <div class="navbar-end">
-      <a class="navbar-item" routerLink="/dashboard">
-        Dashboard
-      </a>
-      <a class="navbar-item" routerLink="/house">
-        House
-      </a>
-      <a class="navbar-item" routerLink="/tanent">
-        Tanent
-      </a>
-      <a class="navbar-item" routerLink="/rental">
-        Rental
-      </a>
-      <a class="navbar-item" routerLink="/cutoff">
-        Cutoff
-      </a>
-      <a class="navbar-item" routerLink="/report">
-        Report
-      </a>
-      <a class="navbar-item" routerLink="/cost">
-        Cost
-      </a>
-      <a class="navbar-item" (click)="logout()">
-        Logout
-      </a>
-    </div>
-  </div>
-</nav>
+<mat-nav-list>
+  <a mat-list-item routerLink="/dashboard">Dashboard</a>
+  <a mat-list-item routerLink="/house">House</a>
+  <a mat-list-item routerLink="/tanent">Tanent</a>
+  <a mat-list-item routerLink="/rental">Rental</a>
+  <a mat-list-item routerLink="/cutoff">Cutoff</a>
+  <a mat-list-item routerLink="/report">Report</a>
+  <a mat-list-item routerLink="/cost">Cost</a>
+  <a mat-list-item (click)="logout()">Logout</a>
+</mat-nav-list>

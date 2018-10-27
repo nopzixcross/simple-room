@@ -9,28 +9,24 @@ export class DataService {
 
   getHouseList() {
     let data = [];
-    let idx = 0;
     this.db.firestore
       .collection("house")
       .orderBy("name")
       .get()
-      .then(house => {
-        house.forEach(doc => {
-          let roomData = [];
-          let houseData = doc.data();
-          let houseID = doc.id;
-          data.push({ id: houseID, ...houseData });
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          let index = data.push({ id: doc.id, ...doc.data() }) - 1;
+          data[index]["room"] = [];
           this.db.firestore
+            .collection("house")
+            .doc(doc.id)
             .collection("room")
-            .where("house_id", "==", houseData.name)
             .get()
-            .then(res => {
-              res.forEach(room => {
-                roomData.push(room.data());
+            .then(querySnapshot => {
+              querySnapshot.forEach(doc => {
+                data[index].room.push({ id: doc.id, ...doc.data() });
               });
             });
-          data[idx]["room"] = roomData;
-          idx++;
         });
       });
     return data;
@@ -60,12 +56,36 @@ export class DataService {
     return this.getDetail("cost", id);
   }
 
-  getRoomList() {
-    return this.getDataList("room");
+  getRoomList(documentId) {
+    let data = [];
+    this.db.firestore
+      .collection("house")
+      .doc(documentId)
+      .collection("room")
+      .orderBy("name")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          data.push({ id: doc.id, ...doc.data() });
+        });
+      });
+    return data;
   }
 
-  getRoomDetail(id) {
-    return this.getDetail("room", id);
+  getRoomDetail(houseId, roomId) {
+    return this.db
+      .collection("house")
+      .doc(houseId)
+      .collection("room")
+      .doc(roomId)
+      .snapshotChanges()
+      .pipe(
+        map(res => {
+          const id = res.payload.id;
+          const detail = res.payload.data();
+          return { id, ...detail };
+        })
+      );
   }
 
   getRentalDetail(id) {
@@ -111,8 +131,18 @@ export class DataService {
     return this.addDetail("house", data);
   }
 
-  addRoomDetail(data) {
-    return this.addDetail("room", data);
+  addRoomDetail(houseId, data) {
+    this.db
+      .collection("house")
+      .doc(houseId)
+      .collection("room")
+      .add(data)
+      .then(function() {
+        console.log("Document successfully added!");
+      })
+      .catch(function(error) {
+        console.error("Error add document: ", error);
+      });
   }
 
   addCostDetail(data) {
@@ -147,7 +177,7 @@ export class DataService {
     let electrityUnit;
     let waterSupplyUnit;
     this.getDetail("cost", "F6nKkGBmbpkSEnwuDuyZ").subscribe(res => {
-      electrityUnit = parseFloat(res["value"]);
+      electrityUnit = parseFloat(res["base"]);
       data.forEach(transaction => {
         let {
           current_electrity,
@@ -176,8 +206,8 @@ export class DataService {
       });
     });
     data.forEach(transaction => {
-      this.getDetail("rental", transaction.rental_id).subscribe(rent => {
-        this.getDetail("room", rent["room_id"]).subscribe(room => {
+      this.getRoomDetail(transaction.houseId, transaction.roomId).subscribe(
+        room => {
           let {
             rental_id,
             tanentName,
@@ -194,19 +224,19 @@ export class DataService {
             month,
             created_date
           });
-        });
-      });
+        }
+      );
     });
     this.getDetail("cost", "WhMxKfUhFylH8zDIp8H1").subscribe(res => {
-      waterSupplyUnit = parseFloat(res["value"]);
+      waterSupplyUnit = parseFloat(res["base"]);
       data.forEach(transaction => {
         let {
           tanentId,
           tanentName,
-          member,
           created_date,
           year,
-          month
+          month,
+          member
         } = transaction;
         let waterSupplyvalue = waterSupplyUnit;
         let waterSupplyAmount = member * waterSupplyvalue;
@@ -250,8 +280,19 @@ export class DataService {
     return this.updateDetail("tanent", documentId, data);
   }
 
-  updateRoomDetail(documentId, data) {
-    return this.updateDetail("room", documentId, data);
+  updateRoomDetail(houseId, roomId, data) {
+    return this.db
+      .collection("house")
+      .doc(houseId)
+      .collection("room")
+      .doc(roomId)
+      .set(data, { merge: true })
+      .then(function() {
+        console.log("Document successfully added!");
+      })
+      .catch(function(error) {
+        console.error("Error add document: ", error);
+      });
   }
 
   updateDetail(collection, documentId, data) {

@@ -1,24 +1,19 @@
-<a class="button is-primary is-fullwidth" routerLink="/cost/add">
-  <span class="icon">
-    <i class="fas fa-plus"></i>
-  </span>
-</a>
 <table class="table is-responsive is-fullwidth">
   <thead>
     <tr>
       <th>No.</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Unit</th>
+      <th>Name</th>
+      <th>Base</th>
+      <!-- <th>Type</th> -->
       <th></th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let item of cost;index as i">
       <td>{{i+1}}</td>
-      <td>{{item.type}}</td>
-      <td>{{item.description}}</td>
-      <td>{{item.value}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.base}}</td>
+      <!-- <td>{{item.type}}</td> -->
       <td>
         <div class="field is-grouped is-pulled-right">
           <p class="control">
@@ -40,3 +35,7 @@
     </tr>
   </tbody>
 </table>
+
+<div class="add-button">
+  <button mat-fab color="primary" routerLink="/cost/add">+</button>
+</div>

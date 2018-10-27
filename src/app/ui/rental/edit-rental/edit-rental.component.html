@@ -12,18 +12,18 @@
       <div class="select is-fullwidth">
         <select (change)="onChangeHouse($event)">
           <option value="null">Select dropdown</option>
-          <option *ngFor="let item of house" [value]="item.name">{{item.name}}</option>
+          <option *ngFor="let item of house" [value]="item.id">{{item.name}}</option>
         </select>
       </div>
     </div>
   </div>
-  <div class="field" *ngIf="houseName">
+  <div class="field" *ngIf="houseId">
     <label class="label">Room</label>
     <div class="control">
       <div class="select is-fullwidth">
-        <select name="roomId" [(ngModel)]="rental.room_id">
+        <select name="roomId" [(ngModel)]="rental.room">
           <option value="">Select dropdown</option>
-          <option *ngFor="let item of room" [value]="item.id">{{item.name}}</option>
+          <option *ngFor="let item of room" [value]="item|json">{{item.name}}</option>
         </select>
       </div>
     </div>
@@ -33,12 +33,6 @@
     <div class="control">
       <input class="input" type="text" placeholder="Electrity" name="electrityUnit" [(ngModel)]="rental.electrity"
         required>
-    </div>
-  </div>
-  <div class="field">
-    <label class="label">Member</label>
-    <div class="control">
-      <input class="input" type="text" placeholder="Member" name="electrityMember" [(ngModel)]="rental.member" required>
     </div>
   </div>
   <div class="field">
