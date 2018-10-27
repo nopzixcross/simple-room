@@ -8,6 +8,7 @@ import { Observable, of } from "rxjs";
 import { switchMap, startWith, tap, filter } from "rxjs/operators";
 import { NotifyService } from "./notify.service";
 import { Router } from "@angular/router";
+import { LoadingService } from "./loading.service";
 
 interface User {
   uid: string;
@@ -19,12 +20,12 @@ interface User {
 @Injectable()
 export class AuthService {
   user: Observable<User | null>;
-  loggedIn: boolean = false;
   constructor(
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private notify: NotifyService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService
   ) {
     this.user = this.afAuth.authState.pipe(
       switchMap(user => {
@@ -49,14 +50,16 @@ export class AuthService {
   }
 
   emailLogin(email: string, password: string) {
+    this.loadingService.show();
     if (!email || !password) {
+      this.loadingService.show();
       this.notify.update("Please input E-mail and Password!", "error");
       return;
     }
-    this.loggedIn = true;
     return this.afAuth.auth
       .signInWithEmailAndPassword(email, password)
       .then(credential => {
+        this.loadingService.hide();
         this.notify.update("Welcome back!", "success");
         this.router.navigate(["/dashboard"]);
         return this.updateUserData(credential.user);
@@ -65,7 +68,6 @@ export class AuthService {
   }
 
   signOut() {
-    this.loggedIn = false;
     this.afAuth.auth.signOut().then(() => {
       this.router.navigate(["/"]);
       this.notify.clear();

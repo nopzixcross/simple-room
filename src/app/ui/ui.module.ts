@@ -7,7 +7,9 @@ import {
   MatIconModule,
   MatSidenavModule,
   MatListModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule
 } from "@angular/material";
 import { LoginComponent } from "./login/login.component";
 import { NotificationMessageComponent } from "./notification-message/notification-message.component";
@@ -26,6 +28,7 @@ import { RentalComponent } from "./rental/rental.component";
 import { EditRentalComponent } from "./rental/edit-rental/edit-rental.component";
 import { CutoffComponent } from "./cutoff/cutoff.component";
 import { ReportComponent } from "./report/report.component";
+import { LoadingComponent } from "./loading/loading.component";
 
 @NgModule({
   imports: [
@@ -37,7 +40,9 @@ import { ReportComponent } from "./report/report.component";
     MatIconModule,
     MatSidenavModule,
     MatListModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     LoginComponent,
@@ -55,8 +60,14 @@ import { ReportComponent } from "./report/report.component";
     RentalComponent,
     EditRentalComponent,
     CutoffComponent,
-    ReportComponent
+    ReportComponent,
+    LoadingComponent
   ],
-  exports: [LoginComponent, NotificationMessageComponent, MainNavComponent]
+  exports: [
+    LoginComponent,
+    NotificationMessageComponent,
+    MainNavComponent,
+    LoadingComponent
+  ]
 })
 export class UiModule {}

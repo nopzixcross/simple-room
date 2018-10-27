@@ -2,12 +2,17 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { forkJoin, concat, combineLatest, pipe, Subject, of } from "rxjs";
 import { map, merge } from "rxjs/operators";
+import { LoadingService } from "./loading.service";
 
 @Injectable()
 export class DataService {
-  constructor(private db: AngularFirestore) {}
+  constructor(
+    private db: AngularFirestore,
+    private loadingService: LoadingService
+  ) {}
 
   getHouseList() {
+    this.loadingService.show();
     let data = [];
     this.db.firestore
       .collection("house")
@@ -28,6 +33,7 @@ export class DataService {
               });
             });
         });
+        this.loadingService.hide();
       });
     return data;
   }
@@ -57,6 +63,7 @@ export class DataService {
   }
 
   getRoomList(documentId) {
+    this.loadingService.show();
     let data = [];
     this.db.firestore
       .collection("house")
@@ -68,6 +75,7 @@ export class DataService {
         querySnapshot.forEach(doc => {
           data.push({ id: doc.id, ...doc.data() });
         });
+        this.loadingService.hide();
       });
     return data;
   }
@@ -99,6 +107,7 @@ export class DataService {
   }
 
   getDetail(collection, documentId) {
+    this.loadingService.show();
     return this.db
       .collection(collection)
       .doc(documentId)
@@ -107,17 +116,20 @@ export class DataService {
         map(res => {
           const id = res.payload.id;
           const detail = res.payload.data();
+          this.loadingService.hide();
           return { id, ...detail };
         })
       );
   }
 
   getDataList(collection) {
+    this.loadingService.show();
     return this.db
       .collection(collection)
       .snapshotChanges()
       .pipe(
         map(actions => {
+          this.loadingService.hide();
           return actions.map(res => {
             const id = res.payload.doc.id;
             const doc = res.payload.doc.data();

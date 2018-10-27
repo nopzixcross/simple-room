@@ -1,3 +1,6 @@
+<div class="loading">
+    <app-loading></app-loading>
+</div>
 <notification-message></notification-message>
 <div class="main-container" [class.main-is-mobile]="mobileQuery.matches">
     <mat-toolbar *ngIf="authService.user|async" color="primary" class="example-toolbar">
