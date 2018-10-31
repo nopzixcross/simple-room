@@ -198,7 +198,8 @@ export class DataService {
           tanentName,
           created_date,
           year,
-          month
+          month,
+          roomName
         } = transaction;
         let value = electrityUnit;
         let elecUnit = current_electrity - lastmonth_electrity;
@@ -213,6 +214,7 @@ export class DataService {
           value,
           year,
           month,
+          roomName,
           created_date
         });
       });
@@ -225,6 +227,7 @@ export class DataService {
             tanentName,
             year,
             month,
+            roomName,
             created_date
           } = transaction;
           let roomRate = room["rate"];
@@ -234,6 +237,7 @@ export class DataService {
             roomRate,
             year,
             month,
+            roomName,
             created_date
           });
         }

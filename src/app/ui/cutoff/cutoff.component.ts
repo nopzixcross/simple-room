@@ -69,6 +69,7 @@ export class CutoffComponent implements OnInit {
       let tanentId = rent.tanentId;
       let houseId = rent.houseId;
       let roomId = rent.roomId;
+      let roomName = rent.roomName;
       let created_date = new Date();
       let year = this.currentYear;
       let month = this.currentMonth;
@@ -84,7 +85,8 @@ export class CutoffComponent implements OnInit {
         month,
         roomId,
         houseId,
-        member
+        member,
+        roomName
       });
     });
     this.data.setTransactionData(transaction);
@@ -115,40 +117,6 @@ export class CutoffComponent implements OnInit {
           }
         });
       });
-      // this.rental.forEach((rentalList, index, arr) => {
-      //   this.rental[index]["roomName"] = "";
-      //   this.rental[index]["tanentId"] = "";
-      //   this.rental[index]["tanentName"] = "";
-      //   this.rental[index]["member"] = "";
-      //   this.data.getDetail("room", rentalList.room_id).subscribe(res => {
-      //     this.rental[index]["roomName"] = `${res["house_id"]}_${res["name"]}`;
-      //   });
-      //   this.data.getDetail("tanent", rentalList.tanent_id).subscribe(res => {
-      //     this.rental[index]["tanentId"] = res["id"];
-      //     this.rental[index]["tanentName"] = res["name"];
-      //     this.rental[index]["member"] = res["member"];
-      //   });
-      //   let docRef = `${this.currentYear}_${this.currentMonth}_${
-      //     rentalList.id
-      //   }`;
-      //   let docRefLastMonth = `${this.currentYear}_${this.currentMonth - 1}_${
-      //     rentalList.id
-      //   }`;
-      //   this.rental[index]["lastmonth_electrity"] = rentalList.electrity;
-      //   this.data
-      //     .getDetail("transaction_electrity", docRefLastMonth)
-      //     .subscribe(res => {
-      //       if (res["current_electrity"] != null) {
-      //         this.rental[index]["lastmonth_electrity"] =
-      //           res["current_electrity"];
-      //       }
-      //     });
-      //   this.data.getDetail("transaction_electrity", docRef).subscribe(res => {
-      //     if (res["current_electrity"] != null) {
-      //       this.rental[index]["current_electrity"] = res["current_electrity"];
-      //     }
-      //   });
-      // });
     });
   }
 

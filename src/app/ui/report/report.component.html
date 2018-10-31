@@ -39,12 +39,14 @@
       <td style="padding-left:2.5rem"><b>ค่าห้อง</b></td>
       <td colspan="4"></td>
     </tr>
-    <tr *ngFor="let item of item.value.perRoom; index as i">
-      <td colspan="4" style="padding-left:3.5em">
-        ห้อง {{ i + 1 }}
-      </td>
-      <td>{{item.roomRate | number}} บาท</td>
-    </tr>
+    <ng-container *ngFor="let item of item.value.perRoom; index as i">
+      <tr *ngIf="item.roomRate > 0">
+        <td colspan="4" style="padding-left:3.5em">
+          ห้อง{{ item.roomName }}
+        </td>
+        <td>{{item.roomRate | number}} บาท</td>
+      </tr>
+    </ng-container>
     <tr *ngFor="let item of item.value.perTanent">
       <td colspan="3" style="padding-left:2.5em"><b>ค่าน้ำ</b></td>
       <td>{{item.member}} คน</td>
