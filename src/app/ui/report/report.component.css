@@ -1,0 +1,10 @@
+td {
+  padding: 0 !important;
+}
+
+td.indent {
+  padding-left: 1.25em !important;
+}
+td.indent1 {
+  padding-left: 1em !important;
+}
