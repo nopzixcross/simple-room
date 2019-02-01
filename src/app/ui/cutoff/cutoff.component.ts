@@ -26,8 +26,8 @@ interface Rental {
 })
 export class CutoffComponent implements OnInit {
   rental;
-  currentYear = new Date().getFullYear();
-  currentMonth = new Date().getMonth() + 1;
+  currentYear: number = new Date().getFullYear();
+  currentMonth: number = new Date().getMonth() + 1;
   monthDes = [
     "มกราคม",
     "กุมภาพันธ์",
@@ -90,6 +90,9 @@ export class CutoffComponent implements OnInit {
       });
     });
     this.data.setTransactionData(transaction);
+    setTimeout(() => {
+      this.getRental();
+    }, 1000);
   }
 
   getRental() {
@@ -103,10 +106,10 @@ export class CutoffComponent implements OnInit {
         this.rental[index]["lastmonth_electrity"] = rentalList.electrity;
         this.data
           .getDetail("transaction_electrity", docRefLastMonth)
-          .subscribe(res => {
-            if (res["current_electrity"] != null) {
+          .subscribe(resLastMonth => {
+            if (resLastMonth["current_electrity"] != null) {
               this.rental[index]["lastmonth_electrity"] =
-                res["current_electrity"];
+                resLastMonth["current_electrity"];
             }
           });
         this.data.getDetail("transaction_electrity", docRef).subscribe(res => {
