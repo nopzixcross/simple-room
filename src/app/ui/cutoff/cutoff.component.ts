@@ -99,9 +99,7 @@ export class CutoffComponent implements OnInit {
         let docRef = `${this.currentYear}_${this.currentMonth}_${
           rentalList.id
         }`;
-        let docRefLastMonth = `${this.currentYear}_${this.currentMonth - 1}_${
-          rentalList.id
-        }`;
+        let docRefLastMonth = `${this.getLastPeriod()}_${rentalList.id}`;
         this.rental[index]["lastmonth_electrity"] = rentalList.electrity;
         this.data
           .getDetail("transaction_electrity", docRefLastMonth)
@@ -118,6 +116,12 @@ export class CutoffComponent implements OnInit {
         });
       });
     });
+  }
+
+  getLastPeriod() {
+    let month = this.currentMonth == 1 ? 12 : this.currentMonth - 1;
+    let year = this.currentMonth == 1 ? this.currentYear - 1 : this.currentYear;
+    return `${year}_${month}`;
   }
 
   generateMonthYear(minYear, maxYear) {
